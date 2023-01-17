@@ -21,7 +21,7 @@ function weatherBalloon(cityID) {
 		});
 }
 
-function traichu() {
+function load_widgets() {
 	dateTime();
 	weatherBalloon(4544349); //OpenWeather city ID
 }

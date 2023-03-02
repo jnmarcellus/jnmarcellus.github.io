@@ -215,38 +215,7 @@ OjAwrC96SQAAAABJRU5ErkJggg==" />
                         <a href="https://www.channelnewsasia.com/watch"><img src="https://icons.duckduckgo.com/ip3/channelnewsasia.com.ico" class="favicon" alt="Channel News Asia favicon">Channel News Asia</a>
                     </li>
                 </ul>
-            </section>
-        <rssapp-ticker id="tTvkJha8aorfL3F0"></rssapp-ticker><script src="https://widget.rss.app/v1/ticker.js" type="text/javascript" async></script>
-
-        <script type="text/javascript">
-          function getRSSFeed(feed){
-            // Build the YQL query
-            var qryRSS = 'select * from rss where url='+'"'+feed+'"';
-            // Initiate the YQL query
-            $.getJSON("http://query.yahooapis.com/v1/public/yql",
-              {
-                // These are the settings for your API call
-                q: qryRSS,
-                format: "json"
-              },
-
-              // Take the data you got from the YQL server and output it to the screen.  The variable "data" holds the JSON you got back from the YQL server.
-              function(data) {
-                // Just bother with the last 4 entries within the JSON feed
-                for (i=0; i<4; i++)
-                  {
-                  // Output a link, using the link attribute and the title attribute
-                  $('body').append('<a href="'+data.query.results.item[i].link+'">'+data.query.results.item[i].title+'</a><br />');
-                  // Output the description, using the description attribute. 
-                  $('body').append(data.query.results.item[i].description);
-                }
-            });
-          };
-
-          // Test it with Steinbring.net's RSS Feed
-          getRSSFeed('http://steinbring.net/feed/');
-        </script>
-            
+            </section>           
         </section>
     </main>
 </body>

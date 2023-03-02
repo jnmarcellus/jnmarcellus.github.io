@@ -216,6 +216,24 @@ OjAwrC96SQAAAABJRU5ErkJggg==" />
                 </ul>
             </section>
         <rssapp-ticker id="tTvkJha8aorfL3F0"></rssapp-ticker><script src="https://widget.rss.app/v1/ticker.js" type="text/javascript" async></script>
+            
+    <script src="rss-marquee.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const feedUrl = ['https://www.dailymail.co.uk/articles.rss',
+                'https://www.dnoticias.pt/rss/home.xml',
+                'https://www.dnoticias.pt/rss/mundo.xml'
+            ];
+
+            const elementSelector = document.getElementById('marquee');
+
+            new RSSMarquee(feedUrl, elementSelector, {
+                speed: 105,
+                maxItems: 3
+            });
+        });
+    </script>
         </section>
     </main>
 </body>

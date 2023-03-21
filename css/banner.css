@@ -4,7 +4,13 @@
     text-align: center;
     width: 80%;
     max-width: 800px;
+    color: var(--primary-font-color);
+    font-family: var(--font-monospace);
+    font-size: var(--font-size-body);
 }
 .banner h2 {
     margin-bottom: 10px;
+    color: var(--primary-font-color);
+    font-family: var(--font-monospace);
+    font-size: var(--font-size-body);
 }

@@ -17,8 +17,7 @@ const displayBanner = async (stories) => {
     const updateBanner = () => {
         const story = stories[currentStoryIndex];
         bannerContainer.innerHTML = `
-            <h2><a href="${story.url}" target="_blank">${story.title}</a></h2>
-            <p>By: ${story.by} | Score: ${story.score}</p>
+            <h6><a href="${story.url}" target="_blank">${story.title}</a></h6>
         `;
         currentStoryIndex = (currentStoryIndex + 1) % stories.length;
     };
@@ -34,3 +33,5 @@ const fetchAndDisplayStories = async () => {
 };
 
 fetchAndDisplayStories();
+
+//            <p>By: ${story.by} | Score: ${story.score}</p>

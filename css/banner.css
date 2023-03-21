@@ -1,26 +1,10 @@
 .banner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
     border: 1px solid #ccc;
     padding: 20px;
     text-align: center;
-    width: 60%; /* Smaller box width */
-    max-width: 600px; /* Smaller box maximum width */
+    width: 80%;
+    max-width: 800px;
 }
 .banner h6 {
-    font-size: 20px; /* Smaller title font size */
     margin-bottom: 10px;
-}
-.banner a {
-    text-decoration: none;
-    color: #0645ad; /* Change link color if needed */
-}
-.banner a:hover {
-    text-decoration: underline; /* Add underline on hover */
-}
-.banner p {
-    font-size: 14px; /* Smaller font size for the author and score */
 }

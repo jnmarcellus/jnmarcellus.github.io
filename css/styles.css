@@ -247,3 +247,20 @@ aside svg { height: 4.5rem; }
 
     #bookmarks { flex-direction: row; }
 }
+
+/* Change the default color and remove the underline for all links */
+a {
+  color: inherit; /* This will make the link use the same color as the surrounding text */
+  text-decoration: none; /* This will remove the underline */
+}
+
+/* You can also add styles for hover, active, and visited states of the link */
+a:hover {
+  color: #ff9900; /* Change the color when the link is hovered */
+}
+a:active {
+  color: #ff6600; /* Change the color when the link is clicked */
+}
+a:visited {
+  color: #999999; /* Change the color after the link has been visited */
+}

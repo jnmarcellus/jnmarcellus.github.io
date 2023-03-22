@@ -4,6 +4,7 @@
     text-align: center;
     width: 100%;
     max-width: 800px;
+    color: var(--primary-font-color);
 }
 .banner h6 {
     margin-bottom: 10px;

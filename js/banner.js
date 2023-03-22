@@ -22,7 +22,7 @@ const displayBanner = async (stories) => {
         currentStoryIndex = (currentStoryIndex + 1) % stories.length;
     };
 
-    setInterval(updateBanner, 3000); // Change the duration (in milliseconds) to control the rotation speed
+    setInterval(updateBanner, 6000); // Change the duration (in milliseconds) to control the rotation speed
     updateBanner();
 };
 

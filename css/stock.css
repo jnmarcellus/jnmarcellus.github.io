@@ -1,10 +1,8 @@
 #stock-quote {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    background-color: #FFF;
-    border: 1px solid #000;
-    padding: 5px;
-    font-size: 12px;
-    font-family: Arial, sans-serif;
+    border: 0px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    max-width: 800px;
+    color: var(--primary-font-color);
 }

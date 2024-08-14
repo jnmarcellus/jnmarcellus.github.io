@@ -36,32 +36,24 @@ header {
 }
 
 #date-time,
-#weather {
-	flex: 1 1 auto;
-}
+#weather { flex: 1 1 auto; }
 
-#weather {
-	text-align: right;
-	flex: 1 1 auto;
-}
+#weather { text-align: right; }
 
 #weather img {
     display: inline-flex;
     margin-right: var(--spacing-xs);
     width: 1.5rem;
-	flex: 1 1 auto;
 }
 
 #date,
 #location {
     color: var(--primary-link-hover-color);
     font-weight: 700;
-	flex: 1 1 auto;
 }
 
 #time,
 #details {
-    flex: 1 1 auto;
     color: var(--primary-link-color);
     text-transform: capitalize;
 }

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OpenStreetMap with Mesonet Radar</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body>
+    <div id="mapid" style="height: 600px;"></div>
+    <script>
+      var map = L.map('mapid').setView([32.4676, -97.5164], 6); // Coordinates for Oklahoma City, OK
+  
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Â© OpenStreetMap contributors'
+      }).addTo(map);
+  
+        // Weather Radar layer
+        var radarLayer = L.tileLayer.wms("https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
+            layers: 'nexrad-n0r-900913',
+            format: 'image/png',
+            transparent: true,
+            opacity: 0.5,
+            attribution: "Weather data Â© 2012 IEM Nexrad"
+        }).addTo(map);
+      
+        var DCIcon = L.icon({
+          //iconUrl: 'dcicon-green.png',
+          iconUrl: 'dc3.png',          
+          //shadowUrl: 'dcicon-shad.png',
+
+          iconSize:     [32, 32], // size of the icon
+          //shadowSize:   [50, 64], // size of the shadow
+          //iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+          //shadowAnchor: [4, 62],  // the same for the shadow
+          //popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+        });
+
+        var POPIcon = L.icon({
+          //iconUrl: 'dcicon-green.png',
+          iconUrl: 'dc5.png',          
+          //shadowUrl: 'dcicon-shad.png',
+
+          iconSize:     [32, 32], // size of the icon
+          //shadowSize:   [50, 64], // size of the shadow
+          //iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+          //shadowAnchor: [4, 62],  // the same for the shadow
+          //popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+        });
+        
+      //L.marker([35.477360, -97.503290], {icon: DCIcon}).addTo(map);
+      
+      var datacenters = [
+    ];
+
+    datacenters.forEach(function(datacenters) {
+      L.marker([datacenters.lat, datacenters.lon], {icon: DCIcon}).addTo(map)
+      .bindPopup('<strong>Datacenter Name:</strong> ' + datacenters.name +'<br><strong>Address:</strong> ' + datacenters.address + '<br><strong>Support Email: </strong><a href=emailto:' + datacenters.edmail +'>'+ datacenters.ed + '</a><br><strong>IT Support Person:</strong> ' + datacenters.support);
+    });
+
+    var pops = [
+     // { name: 'Lumen - Stratford',address: '501 Texas St, Stratford, TX 79084', lat: 36.32821, lon: -102.07989, support:'877-453-8353', ed:'', edmail:'' },
+      //{ name: 'Lumen - Dallas',address: '3180 Irving Blvd, Dallas, TX 75247', lat: 32.80755736497932, lon: -96.86881266101548, support:'877-453-8353', ed:'', edmail:'' },   
+      //{ name: 'Lumen - Dallas',address: '3180 Irving Blvd, Dallas, TX 75247', lat: 32.80755736497932, lon: -96.86881266101548, support:'877-453-8353', ed:'', edmail:'' },   
+    ];
+
+    pops.forEach(function(pops) {
+      L.marker([pops.lat, pops.lon], {icon: POPIcon}).addTo(map)
+      .bindPopup('<strong>POP Name:</strong> ' + pops.name +'<br><strong>Address:</strong> ' + pops.address + '<br><strong>Support Phone #:</strong> ' + pops.support);
+    });    
+
+      // Hardcoded coordinates for each location. Normally, you'd geocode these.
+      var locations = [
+    ];
+
+    // Add markers for each location
+    locations.forEach(function(location) {
+      L.marker([location.lat, location.lon]).addTo(map)
+      .bindPopup('<strong>Name:</strong> ' + location.name +'<br><strong>Address:</strong> ' + location.address + '<br><strong>Executive Director: </strong><a href=emailto:' + location.edmail +'>'+ location.ed + '</a><br><strong>IT Support Person: </strong>' + location.support);
+    });
+        
+      radarLayer.addTo(map);
+    </script>
+  </body>
+  </html>

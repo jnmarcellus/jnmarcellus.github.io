@@ -158,8 +158,11 @@
     if (!el) return;
     el.innerHTML = '<h2 class="sr-only">Bookmarks</h2>' + C.bookmarks.map(function (group) {
       return '<ul>' + group.map(function (b) {
+        /* Deliberately not loading="lazy": these are 16px icons, all of them
+         * above the fold, and deferring them only delays the one thing you
+         * look at first. */
         return '<li><a href="' + esc(b.href) + '">' +
-          '<img class="favicon" alt="" loading="lazy" ' +
+          '<img class="favicon" alt="" width="16" height="16" ' +
           'src="https://icons.duckduckgo.com/ip3/' + esc(b.icon) + '.ico">' +
           esc(b.name) + '</a></li>';
       }).join('') + '</ul>';

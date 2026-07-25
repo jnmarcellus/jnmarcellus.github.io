@@ -5,7 +5,7 @@
  * a stale worker can never pin an old build forever, which is the classic
  * way a cached static site becomes unfixable from the server side.
  */
-var CACHE = 'quest-v1';
+var CACHE = 'quest-v2';
 var ICONS = 'quest-icons-v1';
 
 var SHELL = [

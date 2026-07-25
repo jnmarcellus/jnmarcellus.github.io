@@ -84,14 +84,20 @@ the page.
 
 ## Hacker News banner
 
-`.banner` is a **fixed** 3.5rem, not a min-height, and `app.js` shrinks the
-headline from 16px down to a 10px floor until it fits. Headlines run from four
-words to well over a hundred characters; letting the box follow the text made
-everything below it jump every six seconds as the banner rotated.
+`.banner` is a **fixed** 2.25rem holding exactly **one** line. The CSS forbids
+wrapping and `app.js` shrinks the headline from 16px down to a 10px floor until
+it stops overflowing sideways. Headlines run from four words to well over a
+hundred characters; letting the box follow the text made everything below it
+jump every six seconds as the banner rotated.
 
-Verified stable from 1 to 156 characters at both 375px and 1280px: banner
-height, dock position and page height do not move, and nothing is clipped.
-Rotation pauses on hover, and a resize re-fits the headline currently shown.
+Verified stable from 1 to 156 characters at 375px and 1280px: one line always,
+banner height 36px, dock position and page height unchanged.
+
+**Long headlines are ellipsised on a phone.** At 375px the banner is 343px
+wide, which is about 57 characters at the 10px floor, and a typical Hacker News
+title is 60–80. The full text is in the link's `title`. This is the cost of the
+one-line rule at that width — a fixed *two*-line box would keep the no-jump
+guarantee and roughly double the readable length, if that trade reads better.
 
 ## Theming
 

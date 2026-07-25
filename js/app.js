@@ -171,22 +171,22 @@
         var i = 0, timer = null;
 
         /*
-         * The container is a fixed height, so a three-word headline and a
-         * eighty-character one occupy the same space and the rotation cannot
-         * shove the rest of the page up and down every six seconds. The type
-         * shrinks to fit instead of the box growing.
+         * One line, fixed box. The CSS forbids wrapping, so this fits to
+         * WIDTH — shrinking until the headline stops overflowing sideways —
+         * where an earlier version fitted to height and simply let long
+         * titles run to two lines.
          *
-         * Stepping down by 0.5px from the maximum is a handful of reflows on
-         * a single short element, once per headline — cheaper and far more
-         * predictable than trying to compute the size from character counts
-         * in a proportional-ish font.
+         * Stepping down by 0.5px is a handful of reflows on a single short
+         * element once per headline, and far more predictable than computing
+         * a size from character counts. Below MIN the text is ellipsised
+         * instead of shrinking into illegibility.
          */
         var fit = function () {
           var h6 = el.firstElementChild;
           if (!h6) return;
           var size = 16;
           h6.style.fontSize = size + 'px';
-          while (size > 10 && h6.scrollHeight > el.clientHeight) {
+          while (size > 10 && h6.scrollWidth > h6.clientWidth) {
             size -= 0.5;
             h6.style.fontSize = size + 'px';
           }
@@ -194,8 +194,10 @@
 
         var show = function () {
           var s = stories[i];
+          /* A long headline on a narrow screen ends up ellipsised, so the
+           * full text goes in title= to stay recoverable. */
           el.innerHTML =
-            '<h6><a href="' +
+            '<h6><a title="' + esc(s.title) + '" href="' +
               esc(s.url || 'https://news.ycombinator.com/item?id=' + s.id) +
               '" target="_blank" rel="noopener">' + esc(s.title) + '</a></h6>';
           fit();

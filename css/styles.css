@@ -356,15 +356,17 @@ a {
 /* Hacker News banner -------------------------------------------------- */
 
 /*
- * Fixed height, not min-height. Headlines vary from four words to eighty
- * characters, and letting the box follow the text meant everything below it
- * jumped every six seconds. app.js shrinks the type to fit this instead.
+ * Fixed height, not min-height, and exactly one line. Headlines vary from
+ * four words to well over a hundred characters; letting the box follow the
+ * text meant everything below it jumped every six seconds. app.js shrinks the
+ * type to fit the width instead, and anything still too long at the minimum
+ * size is ellipsised rather than allowed to wrap.
  */
 .banner {
     align-items: center;
     color: var(--primary-font-color);
     display: flex;
-    height: 3.5rem;
+    height: 2.25rem;
     justify-content: center;
     max-width: 800px;
     overflow: hidden;
@@ -375,6 +377,9 @@ a {
 .banner h6 {
     display: block;
     line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     width: 100%;
 }
 

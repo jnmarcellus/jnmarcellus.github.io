@@ -107,11 +107,6 @@ window.QUEST = {
         "name": "DailyMail",
         "href": "https://www.dailymail.co.uk/ushome/index.html",
         "icon": "dailymail.co.uk"
-      },
-      {
-        "name": "Amazon",
-        "href": "https://www.amazon.com",
-        "icon": "amazon.com"
       }
     ],
     [
@@ -151,6 +146,11 @@ window.QUEST = {
         "name": "Sky News Live",
         "href": "https://www.youtube.com/watch?v=9Auq9mYxFEE",
         "icon": "youtube.com"
+      },
+      {
+        "name": "Amazon",
+        "href": "https://www.amazon.com",
+        "icon": "amazon.com"
       }
     ]
   ]

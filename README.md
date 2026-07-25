@@ -102,8 +102,25 @@ Two, both JSON APIs, both the point: `api.openweathermap.org` and
 glyphs, the logo — is served from this origin. The service worker caches
 nothing cross-origin: a stale forecast is worse than no forecast.
 
-The exception is `map-raw.html`, which loads Leaflet from unpkg and tiles from
-OpenStreetMap and Iowa State. It is an iframe on `map.html` only.
+The exception is `map-raw.html`, which fetches map tiles from OpenStreetMap and
+radar imagery from Iowa State. Those are the data; there is nothing to vendor.
+It is an iframe on `map.html` only, so the start page itself is unaffected.
+
+## Vendored Leaflet
+
+`vendor/leaflet/` holds Leaflet 1.9.4 (BSD-2-Clause, `LICENSE` alongside it),
+byte-identical to the unpkg build it replaced — checked against the SRI hashes
+that used to be pinned in `map-raw.html`. Those attributes are gone now: SRI is
+for resources you don't control, and `crossorigin` on a same-origin fetch
+breaks it.
+
+`leaflet.css` and `leaflet.js` are precached. The PNGs in
+`vendor/leaflet/images/` are not — nothing on the map places a marker or a
+layers control, so they'd be weight for glyphs that are never requested. They
+are same-origin, so the cache-first branch picks them up if that changes.
+
+To upgrade, replace all eight files from the same release together; the CSS
+resolves `images/` relative to itself.
 
 ## Layout
 
@@ -120,6 +137,7 @@ OpenStreetMap and Iowa State. It is an iframe on `map.html` only.
     fonts/              woff2 subsets + OFL licence
     img/icons/          bookmark favicons
     img/weather/        OpenWeather condition icons
+    vendor/leaflet/     Leaflet 1.9.4 + BSD licence
 
 ## Notes
 

@@ -5,12 +5,20 @@
  * a stale worker can never pin an old build forever, which is the classic
  * way a cached static site becomes unfixable from the server side.
  */
-var CACHE = 'quest-v5';
+var CACHE = 'quest-v6';
 
 var SHELL = [
   'index.html',
   'map.html',
   'map-raw.html',
+
+  /* Vendored Leaflet. The marker and layer PNGs under vendor/leaflet/
+     images/ are deliberately NOT here: nothing on the map places a
+     marker or a layers control today, so precaching them would add
+     weight for glyphs that are never requested. If that changes they
+     are same-origin and the cache-first branch picks them up. */
+  'vendor/leaflet/leaflet.css',
+  'vendor/leaflet/leaflet.js',
   'blog.html',
   'css/main.css',
   'css/reset.css',

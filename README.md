@@ -58,8 +58,7 @@ half-switched page.
 
 Self-hosted in `img/icons/` as 32×32 PNGs. Previously hotlinked from
 `icons.duckduckgo.com`, which cost 18 third-party requests per load and told
-DDG the whole bookmark list every time. (Google Fonts and OpenWeather are
-still remote — self-hosting Fira Code would remove the last two.) To add one:
+DDG the whole bookmark list every time. To add one:
 
 ```bash
 curl -so /tmp/i "https://icons.duckduckgo.com/ip3/example.com.ico"
@@ -69,6 +68,20 @@ python -c "from PIL import Image; im=Image.open('/tmp/i').convert('RGBA'); im.th
 Then set `"icon": "example.com"` in `js/config.js` and add the path to `SHELL`
 in `sw.js`. Note DuckDuckGo returns a generic placeholder with a **404** status
 for domains it doesn't know — check the status, not just that you got an image.
+
+## Fonts
+
+Fira Code is self-hosted in `fonts/` (SIL OFL 1.1, `fonts/OFL.txt`) — Google's
+own v27 variable subsets, latin and latin-ext, declared in `css/fonts.css`.
+Each page preloads the latin file, which needs `crossorigin` even though it is
+same-origin: font fetches are CORS-mode, and without it the preload is
+discarded and the font is fetched twice.
+
+Cyrillic, Greek and box-drawing subsets are deliberately not carried; text in
+those scripts falls back to the next family in `--font-monospace`.
+
+The only remaining third-party requests are the OpenWeather API and the Hacker
+News API, both of which are the point.
 
 ## Layout
 
@@ -80,7 +93,10 @@ for domains it doesn't know — check the status, not just that you got an image
     js/config.js        links, engines, weather city  <- edit this
     js/app.js           renders every page, widgets, shortcuts
     sw.js               offline shell
-    css/main.css        imports reset / vars / animations / styles
+    css/main.css        imports reset / fonts / vars / animations / styles
+    css/fonts.css       @font-face for the self-hosted Fira Code
+    fonts/              woff2 subsets + OFL licence
+    img/icons/          bookmark favicons
 
 ## Notes
 

@@ -1,7 +1,7 @@
 /* Based on Josh Comeau's Custom CSS Reset - https://www.joshwcomeau.com/css/custom-css-reset/ */
 @import url('reset.css');
-/* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+/* Fira Code, self-hosted — was an @import to fonts.googleapis.com */
+@import url('fonts.css');
 /* Variables */
 @import url('vars.css');
 /* Animations */

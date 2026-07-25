@@ -80,8 +80,30 @@ discarded and the font is fetched twice.
 Cyrillic, Greek and box-drawing subsets are deliberately not carried; text in
 those scripts falls back to the next family in `--font-monospace`.
 
-The only remaining third-party requests are the OpenWeather API and the Hacker
-News API, both of which are the point.
+## Weather icons
+
+`img/weather/` holds the 18 condition codes OpenWeather documents (`01`–`04`,
+`09`, `10`, `11`, `13`, `50`, each `d` and `n`), at their native 50×50 — which
+is 2× the 24px slot they render into. They remain OpenWeather's artwork, used
+alongside their API.
+
+`app.js` only emits the `<img>` for a code matching that set. While the icons
+were hotlinked, an undocumented code still rendered something; now it would
+404, so an unrecognised code drops the icon and keeps the text.
+
+Six day/night pairs are byte-identical (`03`, `04`, `09`, `11`, `13`, `50` have
+no sun or moon in them). All 18 are kept anyway so the code stays a direct
+`code → file` mapping with no lookup table, which costs about 6 KB.
+
+## Third-party requests
+
+Two, both JSON APIs, both the point: `api.openweathermap.org` and
+`hacker-news.firebaseio.com`. Everything else — fonts, favicons, weather
+glyphs, the logo — is served from this origin. The service worker caches
+nothing cross-origin: a stale forecast is worse than no forecast.
+
+The exception is `map-raw.html`, which loads Leaflet from unpkg and tiles from
+OpenStreetMap and Iowa State. It is an iframe on `map.html` only.
 
 ## Layout
 
@@ -97,6 +119,7 @@ News API, both of which are the point.
     css/fonts.css       @font-face for the self-hosted Fira Code
     fonts/              woff2 subsets + OFL licence
     img/icons/          bookmark favicons
+    img/weather/        OpenWeather condition icons
 
 ## Notes
 

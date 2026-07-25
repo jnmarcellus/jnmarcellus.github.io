@@ -116,10 +116,17 @@
         })
         .then(function (d) {
           var w = d.weather[0];
+          /* img/weather/ holds exactly the 18 codes OpenWeather documents.
+           * Hotlinking meant an undocumented code still rendered something;
+           * now it would 404, so an unknown code drops the icon and keeps the
+           * text rather than showing a broken image. */
+          var glyph = /^(01|02|03|04|09|10|11|13|50)[dn]$/.test(w.icon)
+            ? '<img alt="" width="24" height="24" src="' + BASE + 'img/weather/' + w.icon + '.png">'
+            : '';
           el.innerHTML =
             '<p id="location">' + esc(d.name) + '</p>' +
             '<p id="details" title="Feels like ' + Math.round(d.main.feels_like) + '&deg;F">' +
-              '<img alt="" src="https://openweathermap.org/img/wn/' + esc(w.icon) + '.png">' +
+              glyph +
               esc(w.description) +
               '<span class="separator">|</span>' + Math.round(d.main.temp) + '&deg;F' +
               '<span class="separator">|</span>' +

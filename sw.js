@@ -5,8 +5,7 @@
  * a stale worker can never pin an old build forever, which is the classic
  * way a cached static site becomes unfixable from the server side.
  */
-var CACHE = 'quest-v4';
-var ICONS = 'quest-icons-v1';
+var CACHE = 'quest-v5';
 
 var SHELL = [
   'index.html',
@@ -28,6 +27,26 @@ var SHELL = [
   'favicon-16x16.png',
   'apple-touch-icon.png',
   'site.webmanifest',
+
+  /* The 18 documented OpenWeather condition codes. */
+  'img/weather/01d.png',
+  'img/weather/01n.png',
+  'img/weather/02d.png',
+  'img/weather/02n.png',
+  'img/weather/03d.png',
+  'img/weather/03n.png',
+  'img/weather/04d.png',
+  'img/weather/04n.png',
+  'img/weather/09d.png',
+  'img/weather/09n.png',
+  'img/weather/10d.png',
+  'img/weather/10n.png',
+  'img/weather/11d.png',
+  'img/weather/11n.png',
+  'img/weather/13d.png',
+  'img/weather/13n.png',
+  'img/weather/50d.png',
+  'img/weather/50n.png',
 
   /* Bookmark favicons — self-hosted, so the bookmark list no longer costs
      18 third-party requests. Google Fonts and OpenWeather are still remote. */
@@ -66,7 +85,7 @@ self.addEventListener('activate', function (e) {
   e.waitUntil(
     caches.keys().then(function (keys) {
       return Promise.all(keys.map(function (k) {
-        if (k !== CACHE && k !== ICONS) return caches.delete(k);
+        if (k !== CACHE) return caches.delete(k);
       }));
     }).then(function () { return self.clients.claim(); })
   );
@@ -78,26 +97,10 @@ self.addEventListener('fetch', function (e) {
 
   var url = new URL(req.url);
 
-  /* Weather glyphs are stable and worth having offline. Bookmark favicons
-   * used to be here too; they are same-origin now and fall through to the
-   * cache-first branch below. Everything else cross-origin — the weather
-   * JSON, the HN API, map tiles — must stay live or it is worse than
-   * useless. */
-  if (url.hostname === 'openweathermap.org') {
-    e.respondWith(
-      caches.open(ICONS).then(function (c) {
-        return c.match(req).then(function (hit) {
-          var net = fetch(req).then(function (res) {
-            if (res.ok || res.type === 'opaque') c.put(req, res.clone());
-            return res;
-          }).catch(function () { return hit; });
-          return hit || net;
-        });
-      })
-    );
-    return;
-  }
-
+  /* Nothing cross-origin is cached any more: the only remote requests
+   * left are the OpenWeather and Hacker News JSON APIs, and a stale
+   * forecast is worse than none. Favicons, weather glyphs and fonts are
+   * all same-origin and fall through to the cache-first branch below. */
   if (url.origin !== location.origin) return;
 
   /* Network-first for pages so an edit lands on the next load rather than

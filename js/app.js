@@ -123,11 +123,14 @@
           var glyph = /^(01|02|03|04|09|10|11|13|50)[dn]$/.test(w.icon)
             ? '<img alt="" width="24" height="24" src="' + BASE + 'img/weather/' + w.icon + '.png">'
             : '';
+          /* The description is wrapped rather than left as a bare text node
+           * so CSS can drop it on very narrow screens, where it is the piece
+           * that pushes the line to wrap and the icon already conveys it. */
           el.innerHTML =
             '<p id="location">' + esc(d.name) + '</p>' +
             '<p id="details" title="Feels like ' + Math.round(d.main.feels_like) + '&deg;F">' +
               glyph +
-              esc(w.description) +
+              '<span class="wx-desc">' + esc(w.description) + '</span>' +
               '<span class="separator">|</span>' + Math.round(d.main.temp) + '&deg;F' +
               '<span class="separator">|</span>' +
               '<span class="hilo">' + Math.round(d.main.temp_max) + '&deg; / ' +

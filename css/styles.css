@@ -258,7 +258,11 @@ button:focus-visible {
    child there collides with it. */
 #theme-toggle {
     align-items: center;
-    background-color: transparent;
+    /* Opaque: it floats over article text on long blog pages, and a
+       transparent circle with words showing through reads as a rendering
+       bug. --primary-background-color is translucent in light mode and
+       will not do. */
+    background-color: var(--surface-color);
     border: 0.125rem solid var(--border-color);
     border-radius: 50%;
     bottom: var(--spacing-m);
@@ -481,11 +485,59 @@ a {
 
     #search { display: block; }
 
-    /* Clears the home indicator on notched phones. */
+    /*
+     * This landed squarely on the last row of the bookmark grid — The
+     * Guardian and Mwmbl Search could not be tapped at all. Safe-area insets
+     * did not help; the collision was with page content, not phone chrome.
+     *
+     * Moving it in-flow fixed the overlap and created a worse bug: on a 3400px
+     * article the control sat at the very bottom, so changing theme meant
+     * scrolling the whole post. It stays fixed; #traichu reserves room below
+     * the fold instead, so nothing can end up underneath it.
+     */
     #theme-toggle {
         bottom: max(var(--spacing-m), env(safe-area-inset-bottom));
         right: max(var(--spacing-m), env(safe-area-inset-right));
     }
 
+    /* 2.5rem button + 1rem inset + 1rem clearance. */
+    #traichu { padding-bottom: 4.5rem; }
+
+    /*
+     * 100vh on a phone is the URL-bar-retracted height, so it reserves space
+     * that is not on screen. Nothing here needs vertical centring, and
+     * centring an overflowing flex column is how content gets clipped out of
+     * reach at the top.
+     */
+    main {
+        justify-content: flex-start;
+        min-height: auto;
+    }
+
+    /*
+     * At 1rem the date wrapped across three lines in a 113px box and the
+     * weather ran to two, making the header 88px of shredded text.
+     */
+    header { font-size: 0.8125rem; }
+
+    /* The hi/lo is what pushed the weather onto a second line. */
+    .hilo { display: none; }
+
+    /* flex:1 on both split the header down the middle, giving the weather
+       ~136px for a line needing ~145 — so it wrapped on a 320px phone. The
+       date is a fixed-length string; size it to content and let the weather
+       have the remainder. */
+    #date-time { flex: 0 0 auto; }
+
     .iframe-container { height: 16rem; }
+}
+
+/*
+ * iPhone SE and friends. Even at 0.8125rem the conditions text ("scattered
+ * clouds") ran the weather onto a third line at 320px. The icon already says
+ * what the words say, so it goes and the temperature stays.
+ */
+@media screen and (max-width: 23em) {
+    .wx-desc,
+    .wx-desc + .separator { display: none; }
 }

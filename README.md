@@ -57,8 +57,18 @@ win — it was originally placed mid-file and `.iframe-container`'s desktop
 height silently beat it.
 
 On mobile the three bookmark groups each become a two-column grid, tap targets
-are floored at 44px, the search field reclaims the engine-name gutter, and the
-theme toggle respects `env(safe-area-inset-*)`.
+are floored at 44px, the search field reclaims the engine-name gutter, the
+header drops to 0.8125rem, and the hi/lo is hidden. A second query at 23em
+drops the weather description for 320px phones, where it ran the line to a
+third row; the icon already says the same thing.
+
+**The theme toggle is fixed, and `#traichu` carries `padding-bottom: 4.5rem`
+to keep content out from under it.** Both halves matter. Fixed with no padding
+put the button on top of the last bookmark row — The Guardian and Mwmbl Search
+could not be tapped. Making it static fixed that and created a worse bug: on a
+3400px article the control ended up at the very bottom. It also needs an opaque
+`--surface-color` background, because it floats over article text and
+`--primary-background-color` is translucent in light mode.
 
 `autofocus` is not in the markup. `app.js` takes focus only under
 `(pointer: fine)`, so a phone does not open with the keyboard covering half

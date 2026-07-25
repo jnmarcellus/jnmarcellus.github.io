@@ -48,6 +48,9 @@
     --dark-hover-bg: hsl(var(--color-white-hsl) / 0.05);
     --dark-rule: hsl(var(--color-white-hsl) / 0.15);
     --dark-weather-filter: none;
+    /* Opaque, unlike --*-background-color which is translucent in light
+       mode. The floating toggle needs to actually hide what is under it. */
+    --dark-surface: hsl(var(--color-black-hsl));
 
     --light-background: hsl(var(--color-black-hsl) / 0.075);
     --light-font: hsl(var(--color-black-hsl) / 0.75);
@@ -58,6 +61,7 @@
     --light-hover-bg: hsl(var(--color-black-hsl) / 0.05);
     --light-rule: hsl(var(--color-black-hsl) / 0.15);
     --light-weather-filter: drop-shadow(0 0 0 hsl(var(--color-black-hsl) / 0.75));
+    --light-surface: hsl(0 0% 93%);
 }
 
 /*
@@ -79,6 +83,7 @@
     --hover-bg: var(--light-hover-bg);
     --rule-color: var(--light-rule);
     --weather-filter: var(--light-weather-filter);
+    --surface-color: var(--light-surface);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -92,6 +97,7 @@
         --hover-bg: var(--dark-hover-bg);
         --rule-color: var(--dark-rule);
         --weather-filter: var(--dark-weather-filter);
+        --surface-color: var(--dark-surface);
     }
 }
 
@@ -105,4 +111,5 @@
     --hover-bg: var(--dark-hover-bg);
     --rule-color: var(--dark-rule);
     --weather-filter: var(--dark-weather-filter);
+    --surface-color: var(--dark-surface);
 }

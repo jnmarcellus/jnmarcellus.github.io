@@ -12,7 +12,10 @@
     --color-orange: hsl(var(--color-orange-hsl));
     --color-white-hsl: 60 100% 99%; /* #FFFFFC */
     --color-white: hsl(var(--color-white-hsl));
-    --color-blue-hsl: 206, 90%, 53%; /* #1b97f3 */
+    /* Space-separated, like the others. With commas this expanded to
+       hsl(206, 90%, 53% / 0.25) — mixed comma/slash syntax is invalid, so
+       every rule using it was silently dropped and the focus ring with it. */
+    --color-blue-hsl: 206 90% 53%; /* #1b97f3 */
 
     /* Font-families */
     --font-monospace: "Fira Code", ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
@@ -28,9 +31,6 @@
     --spacing-l: 2rem; /* 32px */
     --spacing-xl: 4rem; /* 64px */
 
-    /* SVGs */
-    --svg-search-gray: url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbD0iIzUyNTI1MiIgZD0iTTMyLDI5LjU4bC05LjQ3LTkuNDdjMS42LTIuMTEsMi41Ni00LjcyLDIuNTYtNy41NkMyNS4wOSw1LjYzLDE5LjQ2LDAsMTIuNTQsMFMwLDUuNjMsMCwxMi41NHM1LjYzLDEyLjU0LDEyLjU0LDEyLjU0YzIuODQsMCw1LjQ2LS45Niw3LjU2LTIuNTZsOS40Nyw5LjQ3LDIuNDItMi40MlpNMy40MiwxMi41NEMzLjQyLDcuNTEsNy41MSwzLjQyLDEyLjU0LDMuNDJzOS4xMiw0LjA4LDkuMTIsOS4xMi00LjA4LDkuMTItOS4xMiw5LjEyUzMuNDIsMTcuNTgsMy40MiwxMi41NFoiLz48L3N2Zz4=');
-    --svg-search-light-gray: url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbD0iIzg3ODc4NyIgZD0iTTMyLDI5LjU4bC05LjQ3LTkuNDdjMS42LTIuMTEsMi41Ni00LjcyLDIuNTYtNy41NkMyNS4wOSw1LjYzLDE5LjQ2LDAsMTIuNTQsMFMwLDUuNjMsMCwxMi41NHM1LjYzLDEyLjU0LDEyLjU0LDEyLjU0YzIuODQsMCw1LjQ2LS45Niw3LjU2LTIuNTZsOS40Nyw5LjQ3LDIuNDItMi40MlpNMy40MiwxMi41NEMzLjQyLDcuNTEsNy41MSwzLjQyLDEyLjU0LDMuNDJzOS4xMiw0LjA4LDkuMTIsOS4xMi00LjA4LDkuMTItOS4xMiw5LjEyUzMuNDIsMTcuNTgsMy40MiwxMi41NFoiLz48L3N2Zz4=');
 }
 
 /* Dark Mode */

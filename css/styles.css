@@ -23,15 +23,17 @@ main {
     width: 20rem;
 }
 
+/* This was display:none until 48em, so the clock and weather — the two
+   things worth glancing at on a phone — were desktop-only. It now sits in
+   flow on small screens and pins to the top only when there is room. */
 header {
     animation: fade 1s ease-in;
-    display: none;
+    display: flex;
     flex: 0 1 auto;
     flex-direction: row;
     justify-content: center;
+    gap: var(--spacing-m);
     padding: var(--spacing-m) var(--spacing-m) 0 var(--spacing-m);
-    position: absolute;
-    top: 0;
     width: 100%;
 }
 
@@ -67,6 +69,8 @@ header {
 
 .separator { margin: 0 var(--spacing-xs); }
 
+.hilo { opacity: 0.7; }
+
 aside {
     display: flex;
     justify-content: space-around;
@@ -92,27 +96,42 @@ aside svg { height: 4.5rem; }
     transition: fill 0.125s ease-in-out;
 }
 
-#dock a:focus,
+#dock a:focus-visible,
 #dock a:hover {
     animation: slime 0.75s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
     fill: var(--primary-link-hover-color);
-    outline: none;
 }
 
-#dock li:nth-child(1) a:focus,
-#dock li:nth-child(1) a:hover { fill: hsl(5, 81%, 56%); } /* Gmail */
-#dock li:nth-child(2) a:focus,
-#dock li:nth-child(2) a:hover { fill: hsl(217, 89%, 61%); } /* Google Calendar */
-#dock li:nth-child(3) a:focus,
-#dock li:nth-child(3) a:hover { fill: hsl(44, 100%, 50%); } /* Google Keep */
-#dock li:nth-child(4) a:focus,
-#dock li:nth-child(4) a:hover { fill: var(--primary-link-hover-color); } /* Notion */
-#dock li:nth-child(5) a:focus,
-#dock li:nth-child(5) a:hover { fill: hsl(102, 53%, 52%); } /* Github */
-#dock li:nth-child(6) a:focus,
-#dock li:nth-child(6) a:hover { fill: hsl(14, 89%, 53%); } /* Figma */
+/* These were labelled Gmail/Calendar/Keep/Notion/GitHub/Figma — none of
+   which are in the dock — and item 7 had no colour at all. Order matches
+   QUEST.dock in js/config.js; reorder there and update here. */
+#dock li:nth-child(1) a:focus-visible,
+#dock li:nth-child(1) a:hover { fill: hsl(157, 62%, 45%); }  /* ChatGPT */
+#dock li:nth-child(2) a:focus-visible,
+#dock li:nth-child(2) a:hover { fill: hsl(102, 53%, 42%); }  /* Grammarly */
+#dock li:nth-child(3) a:focus-visible,
+#dock li:nth-child(3) a:hover { fill: hsl(20, 89%, 55%); }   /* Scout */
+#dock li:nth-child(4) a:focus-visible,
+#dock li:nth-child(4) a:hover { fill: hsl(207, 80%, 50%); }  /* Smartsheet */
+#dock li:nth-child(5) a:focus-visible,
+#dock li:nth-child(5) a:hover { fill: var(--primary-link-hover-color); } /* GitHub */
+#dock li:nth-child(6) a:focus-visible,
+#dock li:nth-child(6) a:hover { fill: hsl(347, 100%, 63%); } /* Monday */
+#dock li:nth-child(7) a:focus-visible,
+#dock li:nth-child(7) a:hover { stroke: hsl(206 90% 53%); }  /* Weather */
 
 #dock svg { height: 1.5rem; }
+
+/* The weather glyph is drawn with strokes, not filled shapes. Filling it
+   turned an outline icon into a solid blob. */
+#dock svg.icon-stroke {
+    fill: none;
+    stroke: var(--primary-link-color);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.75;
+    transition: stroke 0.125s ease-in-out;
+}
 
 #search {
     display: flex;
@@ -121,30 +140,26 @@ aside svg { height: 4.5rem; }
 
 #search form {
     flex: 1 1 auto;
+    position: relative;
     width: 100%;
 }
 
 #search input {
     background-color: transparent;
-    background-position: right 1.25rem center;
-    background-repeat: no-repeat;
-    background-size: 1.5rem 1.5rem;
     border-radius: 0.5rem;
     color: var(--primary-font-color);
     font-family: var(--font-sans-serif);
     line-height: 1.5;
     outline: 0.25rem solid transparent;
     padding: var(--spacing-m);
+    padding-right: 7rem;   /* keeps typed text clear of #search-engine */
     width: 100%;
 }
 
 @media (prefers-color-scheme: dark) {
-    #search input {
-        background-image: var(--svg-search-gray);
-        border: 0.125rem solid hsl(var(--color-white-hsl) / 0.25);
-    }
-    
-    #search input:hover { border-color: hsl(var(--color-white-hsl) / 0.5); }    
+    #search input { border: 0.125rem solid hsl(var(--color-white-hsl) / 0.25); }
+
+    #search input:hover { border-color: hsl(var(--color-white-hsl) / 0.5); }
 
     #bookmarks a:focus,
     #bookmarks a:hover { background-color: hsl(var(--color-white-hsl) / 0.05); }
@@ -153,15 +168,31 @@ aside svg { height: 4.5rem; }
 @media (prefers-color-scheme: light) {
     #weather img { filter: drop-shadow(0 0 0 hsl(var(--color-black-hsl) / 0.75)); }
 
-    #search input {
-        background-image: var(--svg-search-light-gray);
-        border: 0.125rem solid hsl(var(--color-black-hsl) / 0.25);
-    } 
+    #search input { border: 0.125rem solid hsl(var(--color-black-hsl) / 0.25); }
 
     #search input:hover { border-color: hsl(var(--color-black-hsl) / 0.5); }
 
     #bookmarks a:focus,
     #bookmarks a:hover { background-color: hsl(var(--color-black-hsl) / 0.05); }
+}
+
+/* The magnifying glass that used to sit here was decoration; the name of
+   the engine your prefix just selected is the thing worth knowing. */
+#search-engine {
+    color: var(--primary-link-color);
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+    pointer-events: none;
+    position: absolute;
+    right: var(--spacing-m);
+    text-transform: uppercase;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#search input::placeholder {
+    color: var(--primary-link-color);
+    opacity: 0.6;
 }
 
 #search input:focus {
@@ -208,10 +239,15 @@ aside svg { height: 4.5rem; }
     text-decoration: none;
 }
 
-#bookmarks a:focus,
-#bookmarks a:hover {
-    color: var(--primary-link-hover-color);
-    outline: none;
+#bookmarks a:focus-visible,
+#bookmarks a:hover { color: var(--primary-link-hover-color); }
+
+/* Keyboard focus was doubly invisible before: outline:none here, and the
+   one accent ring that remained used an invalid hsl() that never applied. */
+a:focus-visible,
+button:focus-visible {
+    outline: 0.125rem solid var(--color-orange);
+    outline-offset: 0.125rem;
 }
 
 /*
@@ -229,8 +265,11 @@ aside svg { height: 4.5rem; }
 
 /* Responsive Media Queries */
 @media screen and (min-width: 48em) {
-    header { display: flex; }
-    
+    header {
+        position: absolute;
+        top: 0;
+    }
+
     #traichu {
         padding: 0;
         width: 45rem; /* 720px */
@@ -248,43 +287,97 @@ aside svg { height: 4.5rem; }
     #bookmarks { flex-direction: row; }
 }
 
-/* Change the default color and remove the underline for all links */
 a {
-  color: inherit; /* This will make the link use the same color as the surrounding text */
-  text-decoration: none; /* This will remove the underline */
+    color: inherit;
+    text-decoration: none;
 }
 
-/* You can also add styles for hover, active, and visited states of the link */
-a:hover {
-  color: #ff9900; /* Change the color when the link is hovered */
+/* Hacker News banner -------------------------------------------------- */
+
+.banner {
+    color: var(--primary-font-color);
+    max-width: 800px;
+    padding: var(--spacing-s) 0;
+    text-align: center;
+    width: 100%;
 }
-a:active {
-  color: #ff6600; /* Change the color when the link is clicked */
+
+.banner h6 {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-s);
+    justify-content: center;
 }
-a:visited {
-  color: #999999; /* Change the color after the link has been visited */
+
+.banner a { color: var(--primary-link-color); }
+.banner a:hover { color: var(--primary-link-hover-color); }
+
+.hn-comments {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    white-space: nowrap;
+}
+
+/* Blog ---------------------------------------------------------------- */
+
+#blog { width: 100%; }
+
+.blog-nav {
+    border-bottom: 1px solid hsl(var(--color-black-hsl) / 0.15);
+    margin-bottom: var(--spacing-l);
+    padding-bottom: var(--spacing-s);
+    text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+    .blog-nav { border-bottom-color: hsl(var(--color-white-hsl) / 0.15); }
+}
+
+.blog-nav a { color: var(--primary-link-color); }
+.blog-nav a:hover,
+.blog-nav a[aria-current] { color: var(--primary-link-hover-color); }
+
+#blog h1 { margin-bottom: var(--spacing-m); }
+
+#blog p,
+#blog li { margin-bottom: var(--spacing-m); }
+
+#blog ul { padding-left: var(--spacing-l); }
+
+#blog article a {
+    color: var(--color-orange);
+    text-decoration: underline;
+}
+
+.post-list {
+    list-style-type: circle;
+    padding-left: var(--spacing-l);
+}
+
+.post-list a { color: var(--primary-link-color); }
+.post-list a:hover { color: var(--primary-link-hover-color); }
+.post-list small { opacity: 0.6; }
+
+/* Radar ---------------------------------------------------------------- */
+
+#maps {
+    display: flex;
+    max-width: 100%;
+    width: 100%;
 }
 
 .iframe-container {
+    border-radius: 15px;
     display: flex;
-    position: relative;
-    width: 100%;
-	height: 100%;
-    max-width: 100%; /* Ensures the iframe does not exceed the container width */
+    height: 20rem;
+    max-width: 100%;
     overflow: hidden;
-    border-radius: 15px; /* Adjust the value as needed */
+    width: 100%;
 }
 
 .iframe-container iframe {
     border: 0;
+    height: 100%;
     width: 100%;
-    border-radius: 15px; /* Matches the container's border-radius */
-}
-
-#maps {
-    display: flex;
-    position: relative;
-    width: 100%;
-	height: 280px;
-    max-width: 100%; /* Ensures the iframe does not exceed the container width */
 }

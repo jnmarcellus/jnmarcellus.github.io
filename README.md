@@ -16,17 +16,25 @@ what lets `/blog/2.html` and `/` share the same link list.
 
 ## Search shortcuts
 
-Type a prefix and a space to pick an engine; anything else goes to Perplexity.
+Type a prefix and a space to pick an engine; **anything else goes to
+DuckDuckGo**.
 
 | prefix | engine | prefix | engine |
 |---|---|---|---|
 | `g` | Google | `hn` | Hacker News |
 | `d` | DuckDuckGo | `r` | Reddit |
-| `y` | YouTube | `w` | Wikipedia |
-| `gh` | GitHub | `m` | Google Maps |
-| `a` | Amazon | `c` | Claude |
+| `p` | Perplexity | `w` | Wikipedia |
+| `y` | YouTube | `m` | Google Maps |
+| `gh` | GitHub | `c` | Claude |
+| `a` | Amazon | | |
 
-The active engine is shown at the right edge of the search box as you type.
+`d` duplicates the default on purpose: without it, `d cats` would search for
+the literal string "d cats" instead of stripping the prefix.
+
+The active engine is shown at the right edge of the search box on desktop, and
+just under it on mobile, where taking 112px out of a 288px field to name the
+engine was not a good trade. The placeholder's prefix list is generated from
+the table above, so adding a bang advertises itself.
 
 ## Keyboard
 
@@ -36,6 +44,25 @@ The active engine is shown at the right edge of the search box as you type.
 | `Esc` | clear and unfocus search |
 | `Alt`+`1`–`9` | open the nth dock item |
 | `Alt`+`T` | toggle dark/light (also the button, bottom right) |
+
+## Layout and breakpoints
+
+One breakpoint, 48em. Everything outside a media query is the small-screen
+layout; `min-width: 48em` widens it and `max-width: 47.99em` carries the
+mobile-only overrides.
+
+**The mobile block must stay last in `styles.css`.** It shares specificity
+with the base rules it overrides, so source order is the only thing making it
+win — it was originally placed mid-file and `.iframe-container`'s desktop
+height silently beat it.
+
+On mobile the three bookmark groups each become a two-column grid, tap targets
+are floored at 44px, the search field reclaims the engine-name gutter, and the
+theme toggle respects `env(safe-area-inset-*)`.
+
+`autofocus` is not in the markup. `app.js` takes focus only under
+`(pointer: fine)`, so a phone does not open with the keyboard covering half
+the page.
 
 ## Theming
 

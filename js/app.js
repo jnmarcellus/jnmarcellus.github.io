@@ -260,6 +260,17 @@
     input.addEventListener('input', update);
     update();
 
+    /* Generated from the bang table so adding one to config.js advertises
+     * itself. Dropped on narrow screens, where the full list wraps the
+     * placeholder into an unreadable smear. */
+    input.placeholder = window.matchMedia('(min-width: 48em)').matches
+      ? 'Search — ' + Object.keys(C.search.bangs).join(', ')
+      : 'Search';
+
+    /* autofocus lived in the markup, which on a phone means the keyboard
+     * covers half the page before you have asked for it. */
+    if (window.matchMedia('(pointer: fine)').matches) input.focus();
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var p = parseQuery(input.value);

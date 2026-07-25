@@ -13,14 +13,17 @@ main {
     min-height: 100vh;
 }
 
+/* Was a hard 20rem, which left a 375px phone with 55px of dead margin and
+   overflowed a 320px one outright. */
 #traichu {
     display: flex;
     flex: 1 1 auto;
     flex-direction: column;
     justify-content: center;
-    padding: var(--spacing-l) var(--spacing-m) var(--spacing-m) var(--spacing-m);
-    row-gap: var(--spacing-l);
-    width: 20rem;
+    max-width: 24rem;
+    padding: var(--spacing-m);
+    row-gap: var(--spacing-m);
+    width: 100%;
 }
 
 /* This was display:none until 48em, so the clock and weather — the two
@@ -76,8 +79,14 @@ aside {
     justify-content: space-around;
 }
 
+/* width:auto is load-bearing. The <img> carries width="150" height="150" to
+   reserve layout space, and that attribute acts as a CSS width — so setting
+   only the height squashed a square logo to 150x72. */
 aside img,
-aside svg { height: 4.5rem; }
+aside svg {
+    height: 4.5rem;
+    width: auto;
+}
 
 #dock ul {
     display: flex;
@@ -296,6 +305,7 @@ button:focus-visible {
     * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
+
 /*
     Accessible hiding for screen readers
     https://webaim.org/techniques/css/invisiblecontent/#techniques
@@ -317,8 +327,9 @@ button:focus-visible {
     }
 
     #traichu {
+        max-width: 45rem; /* 720px */
         padding: 0;
-        width: 45rem; /* 720px */
+        row-gap: var(--spacing-l);
     }
 
     aside img,
@@ -422,4 +433,59 @@ a {
     border: 0;
     height: 100%;
     width: 100%;
+}
+
+/* Mobile ---------------------------------------------------------------- */
+
+/*
+ * Everything above is the small-screen layout; the 48em block below widens
+ * it. These rules exist because the page was only ever checked at desktop
+ * width: 18 bookmarks stacked into a single 1.4-screen column, and every
+ * tap target was under the 44px minimum — bookmarks at 32, dock icons at 24.
+ */
+@media screen and (max-width: 47.99em) {
+    /* Three groups of six become three groups of two columns: nine rows
+       instead of eighteen, with the grouping preserved. */
+    #bookmarks ul {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #bookmarks { row-gap: var(--spacing-s); width: 100%; }
+
+    #bookmarks a {
+        min-height: 2.75rem; /* 44px */
+        padding: var(--spacing-s) var(--spacing-xs);
+    }
+
+    #bookmarks li { margin-bottom: 0; min-width: 0; }
+
+    /* Long names would otherwise widen the grid track and force a scrollbar. */
+    #bookmarks a { overflow: hidden; }
+
+    #dock a { padding: 0.625rem; } /* 24px icon + 20px padding = 44px */
+
+    #dock ul { column-gap: var(--spacing-xs); row-gap: 0; }
+
+    /* The engine name inside the field cost 112px of a 288px input. Below
+       the field it costs ~18px of height and none of the width. */
+    #search-engine {
+        display: block;
+        margin-top: var(--spacing-xs);
+        position: static;
+        text-align: right;
+        transform: none;
+    }
+
+    #search input { padding-right: var(--spacing-m); }
+
+    #search { display: block; }
+
+    /* Clears the home indicator on notched phones. */
+    #theme-toggle {
+        bottom: max(var(--spacing-m), env(safe-area-inset-bottom));
+        right: max(var(--spacing-m), env(safe-area-inset-right));
+    }
+
+    .iframe-container { height: 16rem; }
 }

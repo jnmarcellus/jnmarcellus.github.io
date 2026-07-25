@@ -25,12 +25,17 @@ window.QUEST = {
    * Type "g rust traits" to search Google; bare text goes to `default`.
    * A prefix only counts when followed by a space, so "gh" alone still
    * searches for the word "gh".
+   *
+   * DuckDuckGo is the default; Perplexity moved to "p". "d" is kept even
+   * though it duplicates the default, because without it "d cats" searches
+   * for the literal string "d cats" rather than stripping the prefix.
    */
   search: {
-    default: { name: 'Perplexity', url: 'https://www.perplexity.ai/search?q=' },
+    default: { name: 'DuckDuckGo', url: 'https://duckduckgo.com/?q=' },
     bangs: {
       g:   { name: 'Google',     url: 'https://www.google.com/search?q=' },
       d:   { name: 'DuckDuckGo', url: 'https://duckduckgo.com/?q=' },
+      p:   { name: 'Perplexity', url: 'https://www.perplexity.ai/search?q=' },
       y:   { name: 'YouTube',    url: 'https://www.youtube.com/results?search_query=' },
       gh:  { name: 'GitHub',     url: 'https://github.com/search?q=' },
       a:   { name: 'Amazon',     url: 'https://www.amazon.com/s?k=' },

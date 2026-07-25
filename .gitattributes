@@ -1,2 +1,8 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Vendored third-party releases are stored verbatim. leaflet.css ships with
+# CRLF upstream, and `text=auto` silently rewrote it to LF on commit — the
+# file still worked, but it no longer hashed to the published SRI value, so
+# the one property that makes a vendored copy auditable was gone.
+vendor/** -text

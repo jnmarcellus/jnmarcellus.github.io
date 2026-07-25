@@ -451,11 +451,24 @@ a {
     /* Three groups of six become three groups of two columns: nine rows
        instead of eighteen, with the grouping preserved. */
     #bookmarks ul {
+        column-gap: var(--spacing-xs);
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: 100%;
     }
 
-    #bookmarks { row-gap: var(--spacing-s); width: 100%; }
+    /*
+     * align-items:flex-start on the column made each <ul> shrink to its own
+     * longest label, so the three groups came out 275 / 218 / 314px wide and
+     * the second column began at x=154, 125 and 173 — the ragged, drifting
+     * look. Stretching them to a common width puts every column boundary at
+     * the same 50%.
+     */
+    #bookmarks {
+        align-items: stretch;
+        row-gap: var(--spacing-s);
+        width: 100%;
+    }
 
     #bookmarks a {
         min-height: 2.75rem; /* 44px */
@@ -516,9 +529,36 @@ a {
 
     /*
      * At 1rem the date wrapped across three lines in a 113px box and the
-     * weather ran to two, making the header 88px of shredded text.
+     * weather ran to two, making the header 88px of shredded text. 0.75rem
+     * is small enough that the whole line fits even on a 320px phone.
      */
-    header { font-size: 0.8125rem; }
+    header { font-size: 0.75rem; }
+
+    /* Rebalanced against the smaller text — a 24px glyph next to 12px type
+       read as an outsized blob. */
+    #weather img { width: 1.25rem; }
+
+    /*
+     * The conditions string is arbitrary length from the API — "clear sky" is
+     * nine characters but "thunderstorm with heavy rain" is a real value, and
+     * testing against whatever the weather happens to be today is how this
+     * layout broke in the first place. Clip it instead of wrapping the row.
+     */
+    #details { flex-wrap: nowrap; }
+
+    /* min-width:auto is the flex default and means "never shrink below your
+       content". It has to be cleared at every level between the header and
+       the text, or the ellipsis never gets the chance to apply and the long
+       string pushes the whole page sideways instead. */
+    #weather,
+    #details,
+    .wx-desc { min-width: 0; }
+
+    .wx-desc {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 
     /* The hi/lo is what pushed the weather onto a second line. */
     .hilo { display: none; }

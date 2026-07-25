@@ -31,24 +31,78 @@
     --spacing-l: 2rem; /* 32px */
     --spacing-xl: 4rem; /* 64px */
 
+    /*
+    Theme token sets. Every theme-dependent value in the site is named here
+    exactly once; the blocks below only ever MAP a set onto the --primary-*
+    names. Adding a themed value means adding one --dark-* / --light-* pair
+    and one line to each of the three mappings — never a new media query
+    buried in styles.css, which is how the old dark/light rules ended up
+    scattered across four files.
+    */
+    --dark-background: var(--color-black);
+    --dark-font: var(--color-white);
+    --dark-link: hsl(var(--color-white-hsl) / 0.5);
+    --dark-link-hover: var(--color-white);
+    --dark-border: hsl(var(--color-white-hsl) / 0.25);
+    --dark-border-hover: hsl(var(--color-white-hsl) / 0.5);
+    --dark-hover-bg: hsl(var(--color-white-hsl) / 0.05);
+    --dark-rule: hsl(var(--color-white-hsl) / 0.15);
+    --dark-weather-filter: none;
+
+    --light-background: hsl(var(--color-black-hsl) / 0.075);
+    --light-font: hsl(var(--color-black-hsl) / 0.75);
+    --light-link: hsl(var(--color-black-hsl) / 0.75);
+    --light-link-hover: var(--color-black);
+    --light-border: hsl(var(--color-black-hsl) / 0.25);
+    --light-border-hover: hsl(var(--color-black-hsl) / 0.5);
+    --light-hover-bg: hsl(var(--color-black-hsl) / 0.05);
+    --light-rule: hsl(var(--color-black-hsl) / 0.15);
+    --light-weather-filter: drop-shadow(0 0 0 hsl(var(--color-black-hsl) / 0.75));
 }
 
-/* Dark Mode */
+/*
+ * Three mappings, in this order:
+ *   1. light, the default when the OS expresses no preference
+ *   2. dark, when the OS asks for it and the user has not overridden
+ *   3. [data-theme], an explicit choice, which beats both
+ *
+ * :root:not([data-theme]) and :root[data-theme="..."] have equal
+ * specificity, so rule 3 wins only because it comes last. Don't reorder.
+ */
+:root {
+    --primary-background-color: var(--light-background);
+    --primary-font-color: var(--light-font);
+    --primary-link-color: var(--light-link);
+    --primary-link-hover-color: var(--light-link-hover);
+    --border-color: var(--light-border);
+    --border-hover-color: var(--light-border-hover);
+    --hover-bg: var(--light-hover-bg);
+    --rule-color: var(--light-rule);
+    --weather-filter: var(--light-weather-filter);
+}
+
 @media (prefers-color-scheme: dark) {
-    :root {
-        --primary-background-color: var(--color-black);
-        --primary-font-color: var(--color-white);
-        --primary-link-color: hsl(var(--color-white-hsl) / 0.5);
-        --primary-link-hover-color: var(--color-white);
+    :root:not([data-theme]) {
+        --primary-background-color: var(--dark-background);
+        --primary-font-color: var(--dark-font);
+        --primary-link-color: var(--dark-link);
+        --primary-link-hover-color: var(--dark-link-hover);
+        --border-color: var(--dark-border);
+        --border-hover-color: var(--dark-border-hover);
+        --hover-bg: var(--dark-hover-bg);
+        --rule-color: var(--dark-rule);
+        --weather-filter: var(--dark-weather-filter);
     }
 }
 
-/* Light Mode */
-@media (prefers-color-scheme: light) {
-    :root {
-        --primary-background-color: hsl(var(--color-black-hsl) / 0.075);
-        --primary-font-color: hsl(var(--color-black-hsl) / 0.75);
-        --primary-link-color: hsl(var(--color-black-hsl) / 0.75);
-        --primary-link-hover-color: var(--color-black);
-    }
+:root[data-theme="dark"] {
+    --primary-background-color: var(--dark-background);
+    --primary-font-color: var(--dark-font);
+    --primary-link-color: var(--dark-link);
+    --primary-link-hover-color: var(--dark-link-hover);
+    --border-color: var(--dark-border);
+    --border-hover-color: var(--dark-border-hover);
+    --hover-bg: var(--dark-hover-bg);
+    --rule-color: var(--dark-rule);
+    --weather-filter: var(--dark-weather-filter);
 }

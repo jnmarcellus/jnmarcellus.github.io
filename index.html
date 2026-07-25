@@ -5,15 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Personal start page — search, bookmarks, weather, radar and Hacker News.">
-    <meta name="theme-color" content="#FFFFFC" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#1C1C1C" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#1C1C1C">
     <title>Quest</title>
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="manifest" href="site.webmanifest">
     <link rel="stylesheet" href="css/main.css">
-    <script>window.BASE = '';</script>
+    <script>window.BASE='';try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
     <script src="js/config.js" defer></script>
     <script src="js/app.js" defer></script>
 </head>

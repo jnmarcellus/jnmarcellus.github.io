@@ -35,6 +35,40 @@ The active engine is shown at the right edge of the search box as you type.
 | any letter, or `/` | focus search |
 | `Esc` | clear and unfocus search |
 | `Alt`+`1`–`9` | open the nth dock item |
+| `Alt`+`T` | toggle dark/light (also the button, bottom right) |
+
+## Theming
+
+Three states, not two: no stored choice means **follow the OS**, and the page
+keeps tracking it live. Clicking the toggle stores an explicit `theme` in
+localStorage that overrides the OS from then on. To go back to following the
+OS, clear it from the console:
+
+```js
+localStorage.removeItem('theme'); location.reload();
+```
+
+Every theme-dependent value is a `--dark-*` / `--light-*` pair in
+`css/vars.css`, mapped onto `--primary-*` names by the three blocks below it.
+Add themed values there — **never** as a new `prefers-color-scheme` query in
+`styles.css`, because a media query ignores the manual override and you get a
+half-switched page.
+
+## Bookmark favicons
+
+Self-hosted in `img/icons/` as 32×32 PNGs. Previously hotlinked from
+`icons.duckduckgo.com`, which cost 18 third-party requests per load and told
+DDG the whole bookmark list every time. (Google Fonts and OpenWeather are
+still remote — self-hosting Fira Code would remove the last two.) To add one:
+
+```bash
+curl -so /tmp/i "https://icons.duckduckgo.com/ip3/example.com.ico"
+python -c "from PIL import Image; im=Image.open('/tmp/i').convert('RGBA'); im.thumbnail((32,32)); im.save('img/icons/example.com.png',optimize=True)"
+```
+
+Then set `"icon": "example.com"` in `js/config.js` and add the path to `SHELL`
+in `sw.js`. Note DuckDuckGo returns a generic placeholder with a **404** status
+for domains it doesn't know — check the status, not just that you got an image.
 
 ## Layout
 

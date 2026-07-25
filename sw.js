@@ -5,7 +5,7 @@
  * a stale worker can never pin an old build forever, which is the classic
  * way a cached static site becomes unfixable from the server side.
  */
-var CACHE = 'quest-v2';
+var CACHE = 'quest-v3';
 var ICONS = 'quest-icons-v1';
 
 var SHELL = [
@@ -24,7 +24,27 @@ var SHELL = [
   'favicon-32x32.png',
   'favicon-16x16.png',
   'apple-touch-icon.png',
-  'site.webmanifest'
+  'site.webmanifest',
+
+  /* Bookmark favicons — self-hosted, so the bookmark list no longer costs
+     18 third-party requests. Google Fonts and OpenWeather are still remote. */
+  'img/icons/amazon.com.png',
+  'img/icons/arstechnica.com.png',
+  'img/icons/dailymail.co.uk.png',
+  'img/icons/google.com.png',
+  'img/icons/hulu.com.png',
+  'img/icons/johnmarcellus.com.png',
+  'img/icons/linkedin.com.png',
+  'img/icons/mwmbl.org.png',
+  'img/icons/netflix.com.png',
+  'img/icons/news.ycombinator.com.png',
+  'img/icons/reddit.com.png',
+  'img/icons/slashdot.org.png',
+  'img/icons/spotify.com.png',
+  'img/icons/theguardian.com.png',
+  'img/icons/tldr.tech.png',
+  'img/icons/x.com.png',
+  'img/icons/youtube.com.png'
 ];
 
 self.addEventListener('install', function (e) {
@@ -55,11 +75,12 @@ self.addEventListener('fetch', function (e) {
 
   var url = new URL(req.url);
 
-  /* Bookmark favicons and weather glyphs are stable and worth having
-   * offline. Everything else cross-origin — the weather JSON, the HN API,
-   * map tiles — must stay live or it is worse than useless. */
-  if (url.hostname === 'icons.duckduckgo.com' ||
-      url.hostname === 'openweathermap.org') {
+  /* Weather glyphs are stable and worth having offline. Bookmark favicons
+   * used to be here too; they are same-origin now and fall through to the
+   * cache-first branch below. Everything else cross-origin — the weather
+   * JSON, the HN API, map tiles — must stay live or it is worse than
+   * useless. */
+  if (url.hostname === 'openweathermap.org') {
     e.respondWith(
       caches.open(ICONS).then(function (c) {
         return c.match(req).then(function (hit) {

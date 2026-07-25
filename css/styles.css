@@ -156,25 +156,17 @@ aside svg { height: 4.5rem; }
     width: 100%;
 }
 
-@media (prefers-color-scheme: dark) {
-    #search input { border: 0.125rem solid hsl(var(--color-white-hsl) / 0.25); }
+/* Two duplicated prefers-color-scheme blocks became these four rules. They
+   read theme tokens, so the manual toggle moves them too — a media query
+   here would ignore an explicit choice and half the page would stay dark. */
+#weather img { filter: var(--weather-filter); }
 
-    #search input:hover { border-color: hsl(var(--color-white-hsl) / 0.5); }
+#search input { border: 0.125rem solid var(--border-color); }
 
-    #bookmarks a:focus,
-    #bookmarks a:hover { background-color: hsl(var(--color-white-hsl) / 0.05); }
-}
+#search input:hover { border-color: var(--border-hover-color); }
 
-@media (prefers-color-scheme: light) {
-    #weather img { filter: drop-shadow(0 0 0 hsl(var(--color-black-hsl) / 0.75)); }
-
-    #search input { border: 0.125rem solid hsl(var(--color-black-hsl) / 0.25); }
-
-    #search input:hover { border-color: hsl(var(--color-black-hsl) / 0.5); }
-
-    #bookmarks a:focus,
-    #bookmarks a:hover { background-color: hsl(var(--color-black-hsl) / 0.05); }
-}
+#bookmarks a:focus-visible,
+#bookmarks a:hover { background-color: var(--hover-bg); }
 
 /* The magnifying glass that used to sit here was decoration; the name of
    the engine your prefix just selected is the thing worth knowing. */
@@ -250,10 +242,64 @@ button:focus-visible {
     outline-offset: 0.125rem;
 }
 
+/* Theme toggle ---------------------------------------------------------- */
+
+/* Bottom-right rather than in the header: the header is position:absolute
+   with the weather hard against the right edge on desktop, and a third
+   child there collides with it. */
+#theme-toggle {
+    align-items: center;
+    background-color: transparent;
+    border: 0.125rem solid var(--border-color);
+    border-radius: 50%;
+    bottom: var(--spacing-m);
+    color: var(--primary-link-color);
+    cursor: pointer;
+    display: flex;
+    height: 2.5rem;
+    justify-content: center;
+    padding: 0;
+    position: fixed;
+    right: var(--spacing-m);
+    transition: border-color 0.125s ease-in-out, color 0.125s ease-in-out;
+    width: 2.5rem;
+    z-index: 10;
+}
+
+#theme-toggle:hover {
+    border-color: var(--border-hover-color);
+    color: var(--primary-link-hover-color);
+}
+
+#theme-toggle svg {
+    fill: none;
+    height: 1.25rem;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+    width: 1.25rem;
+}
+
+/* Only one of the two glyphs is ever shown: the sun when we are dark (click
+   to go light) and the moon when we are light. */
+#theme-toggle .icon-sun { display: none; }
+:root[data-theme="dark"] #theme-toggle .icon-sun { display: block; }
+:root[data-theme="dark"] #theme-toggle .icon-moon { display: none; }
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) #theme-toggle .icon-sun { display: block; }
+    :root:not([data-theme]) #theme-toggle .icon-moon { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
 /*
     Accessible hiding for screen readers
     https://webaim.org/techniques/css/invisiblecontent/#techniques
-*/ 
+*/
 .sr-only {
     height: 1px;
     left: -10000px;
@@ -324,14 +370,10 @@ a {
 #blog { width: 100%; }
 
 .blog-nav {
-    border-bottom: 1px solid hsl(var(--color-black-hsl) / 0.15);
+    border-bottom: 1px solid var(--rule-color);
     margin-bottom: var(--spacing-l);
     padding-bottom: var(--spacing-s);
     text-align: center;
-}
-
-@media (prefers-color-scheme: dark) {
-    .blog-nav { border-bottom-color: hsl(var(--color-white-hsl) / 0.15); }
 }
 
 .blog-nav a { color: var(--primary-link-color); }

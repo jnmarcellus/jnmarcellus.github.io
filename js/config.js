@@ -5,6 +5,12 @@
  *
  * href "~/foo" means "relative to the site root", resolved against
  * window.BASE so /blog/2.html and / both get a working link.
+ *
+ * A bookmark's "icon" is a filename in img/icons/ (without .png). To add
+ * one, drop a 32x32 PNG in there and name it here — see the fetch recipe
+ * in README.md. They used to be hotlinked from icons.duckduckgo.com, which
+ * meant 18 third-party requests on every load and handed DDG the whole
+ * bookmark list each time.
  */
 window.QUEST = {
   /*
@@ -132,7 +138,7 @@ window.QUEST = {
       {
         "name": "X",
         "href": "https://twitter.com",
-        "icon": "twitter.com"
+        "icon": "x.com"
       },
       {
         "name": "LinkedIn",

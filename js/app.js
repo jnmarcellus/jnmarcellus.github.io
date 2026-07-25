@@ -27,6 +27,63 @@
 
   function $(id) { return document.getElementById(id); }
 
+  /* ------------------------------------------------------------------ theme */
+
+  var SUN = '<svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">' +
+    '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/>' +
+    '<line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>' +
+    '<line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/>' +
+    '<line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>' +
+    '<line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+
+  var MOON = '<svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">' +
+    '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+
+  var toggleTheme = function () {};
+
+  function theme() {
+    var root = document.documentElement;
+    var meta = document.querySelector('meta[name="theme-color"]');
+    var media = window.matchMedia('(prefers-color-scheme: dark)');
+
+    var btn = document.createElement('button');
+    btn.id = 'theme-toggle';
+    btn.type = 'button';
+    btn.innerHTML = SUN + MOON;
+    document.body.appendChild(btn);
+
+    /* No stored choice means "follow the OS", which is a real third state —
+     * collapsing it to a stored value on first load would freeze the page
+     * to whatever the OS happened to be that morning. */
+    var resolved = function () {
+      return root.dataset.theme || (media.matches ? 'dark' : 'light');
+    };
+
+    var sync = function () {
+      var t = resolved();
+      if (meta) meta.setAttribute('content', t === 'dark' ? '#1C1C1C' : '#EEEEEE');
+      btn.setAttribute('aria-pressed', String(t === 'dark'));
+      var label = 'Switch to ' + (t === 'dark' ? 'light' : 'dark') + ' theme (Alt+T)';
+      btn.setAttribute('aria-label', label);
+      btn.title = label;
+    };
+
+    toggleTheme = function () {
+      var next = resolved() === 'dark' ? 'light' : 'dark';
+      root.dataset.theme = next;
+      /* Safari in private mode throws on setItem rather than no-opping. */
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      sync();
+    };
+
+    btn.addEventListener('click', toggleTheme);
+    media.addEventListener('change', function () {
+      if (!root.dataset.theme) sync();
+    });
+
+    sync();
+  }
+
   /* ------------------------------------------------------------------ clock */
 
   function clock() {
@@ -163,7 +220,7 @@
          * look at first. */
         return '<li><a href="' + esc(b.href) + '">' +
           '<img class="favicon" alt="" width="16" height="16" ' +
-          'src="https://icons.duckduckgo.com/ip3/' + esc(b.icon) + '.ico">' +
+          'src="' + BASE + 'img/icons/' + esc(b.icon) + '.png">' +
           esc(b.name) + '</a></li>';
       }).join('') + '</ul>';
     }).join('');
@@ -215,6 +272,13 @@
       var active = document.activeElement || document.body;
       var typing = /^(INPUT|TEXTAREA|SELECT)$/.test(active.tagName) || active.isContentEditable;
 
+      /* Alt+T, not plain "t" — every bare letter is taken by search focus. */
+      if (e.altKey && !e.ctrlKey && !e.metaKey && (e.key === 't' || e.key === 'T')) {
+        e.preventDefault();
+        toggleTheme();
+        return;
+      }
+
       if (e.altKey && !e.ctrlKey && !e.metaKey && e.key >= '1' && e.key <= '9') {
         var link = document.querySelectorAll('#dock a')[Number(e.key) - 1];
         if (link) { e.preventDefault(); window.location.href = link.href; }
@@ -251,6 +315,7 @@
     });
   }
 
+  theme();
   logo();
   dock();
   bookmarks();

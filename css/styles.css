@@ -355,30 +355,31 @@ a {
 
 /* Hacker News banner -------------------------------------------------- */
 
+/*
+ * Fixed height, not min-height. Headlines vary from four words to eighty
+ * characters, and letting the box follow the text meant everything below it
+ * jumped every six seconds. app.js shrinks the type to fit this instead.
+ */
 .banner {
+    align-items: center;
     color: var(--primary-font-color);
+    display: flex;
+    height: 3.5rem;
+    justify-content: center;
     max-width: 800px;
-    padding: var(--spacing-s) 0;
+    overflow: hidden;
     text-align: center;
     width: 100%;
 }
 
 .banner h6 {
-    align-items: baseline;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-s);
-    justify-content: center;
+    display: block;
+    line-height: 1.3;
+    width: 100%;
 }
 
 .banner a { color: var(--primary-link-color); }
 .banner a:hover { color: var(--primary-link-hover-color); }
-
-.hn-comments {
-    font-size: 0.75rem;
-    opacity: 0.7;
-    white-space: nowrap;
-}
 
 /* Blog ---------------------------------------------------------------- */
 
@@ -448,27 +449,37 @@ a {
  * tap target was under the 44px minimum — bookmarks at 32, dock icons at 24.
  */
 @media screen and (max-width: 47.99em) {
-    /* Three groups of six become three groups of two columns: nine rows
-       instead of eighteen, with the grouping preserved. */
-    #bookmarks ul {
-        column-gap: var(--spacing-xs);
+    /*
+     * All eighteen bookmarks share ONE grid, so every icon and every label
+     * lines up against the same two tracks.
+     *
+     * Three separate grids could not do this. Per-<ul> grids first sized to
+     * their own longest label (groups 275 / 218 / 314px wide); forcing them
+     * to a common width fixed that but pinned the second column to a hard
+     * 50%, so the gutter between the two columns swung from 21px on
+     * "Sky News Live | Mwmbl Search" to 136px on "X | LinkedIn" — a river of
+     * whitespace that changed width on every row.
+     *
+     * display:contents drops the <ul> boxes so their <li> become items of
+     * this grid directly. width:max-content sizes the whole block to its
+     * content instead of the full row, which is what removes the dead space,
+     * and margin-inline:auto centres it.
+     */
+    #bookmarks {
+        column-gap: var(--spacing-m);
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        row-gap: 0;
+        /* Full width, matching the search field and dock. Sizing this to
+           max-content centred it at 298px inside a 343px column, so the
+           bookmarks sat visibly inset from everything else on the page. */
         width: 100%;
     }
 
-    /*
-     * align-items:flex-start on the column made each <ul> shrink to its own
-     * longest label, so the three groups came out 275 / 218 / 314px wide and
-     * the second column began at x=154, 125 and 173 — the ragged, drifting
-     * look. Stretching them to a common width puts every column boundary at
-     * the same 50%.
-     */
-    #bookmarks {
-        align-items: stretch;
-        row-gap: var(--spacing-s);
-        width: 100%;
-    }
+    #bookmarks ul { display: contents; }
+
+    /* Buys the ~24px that keeps the longest pair on one row at 320px. */
+    #bookmarks a { font-size: 0.875rem; }
 
     #bookmarks a {
         min-height: 2.75rem; /* 44px */

@@ -112,11 +112,6 @@ window.QUEST = {
         "name": "Amazon",
         "href": "https://www.amazon.com",
         "icon": "amazon.com"
-      },
-      {
-        "name": "My Blog",
-        "href": "https://jnmarcellus.github.io/blog.html",
-        "icon": "johnmarcellus.com"
       }
     ],
     [
@@ -139,29 +134,9 @@ window.QUEST = {
         "name": "Spotify",
         "href": "https://open.spotify.com",
         "icon": "spotify.com"
-      },
-      {
-        "name": "X",
-        "href": "https://twitter.com",
-        "icon": "x.com"
-      },
-      {
-        "name": "LinkedIn",
-        "href": "https://linkedin.com",
-        "icon": "linkedin.com"
       }
     ],
     [
-      {
-        "name": "Reddit",
-        "href": "https://www.reddit.com",
-        "icon": "reddit.com"
-      },
-      {
-        "name": "TLDR",
-        "href": "https://tldr.tech/",
-        "icon": "tldr.tech"
-      },
       {
         "name": "Slashdot",
         "href": "https://slashdot.org/",
@@ -176,11 +151,6 @@ window.QUEST = {
         "name": "Sky News Live",
         "href": "https://www.youtube.com/watch?v=9Auq9mYxFEE",
         "icon": "youtube.com"
-      },
-      {
-        "name": "Mwmbl Search",
-        "href": "https://mwmbl.org/",
-        "icon": "mwmbl.org"
       }
     ]
   ]

@@ -56,7 +56,15 @@ with the base rules it overrides, so source order is the only thing making it
 win — it was originally placed mid-file and `.iframe-container`'s desktop
 height silently beat it.
 
-On mobile the three bookmark groups each become a two-column grid, tap targets
+On mobile all twelve bookmarks share **one** grid — `#bookmarks` becomes the
+grid and the three `<ul>` get `display: contents` so their `<li>` become items
+of it directly. Three separate grids cannot align to each other: sized to
+their own content the groups came out 275 / 218 / 314px wide, and forced to a
+common width they pinned column two to a hard 50%, so the gutter swung from
+21px to 136px row by row. One grid gives every icon and label the same two
+tracks.
+
+Tap targets
 are floored at 44px, the search field reclaims the engine-name gutter, the
 header drops to 0.8125rem, and the hi/lo is hidden. A second query at 23em
 drops the weather description for 320px phones, where it ran the line to a
@@ -73,6 +81,17 @@ could not be tapped. Making it static fixed that and created a worse bug: on a
 `autofocus` is not in the markup. `app.js` takes focus only under
 `(pointer: fine)`, so a phone does not open with the keyboard covering half
 the page.
+
+## Hacker News banner
+
+`.banner` is a **fixed** 3.5rem, not a min-height, and `app.js` shrinks the
+headline from 16px down to a 10px floor until it fits. Headlines run from four
+words to well over a hundred characters; letting the box follow the text made
+everything below it jump every six seconds as the banner rotated.
+
+Verified stable from 1 to 156 characters at both 375px and 1280px: banner
+height, dock position and page height do not move, and nothing is clipped.
+Rotation pauses on hover, and a resize re-fits the headline currently shown.
 
 ## Theming
 

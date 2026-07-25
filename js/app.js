@@ -169,15 +169,36 @@
         if (!stories.length) throw new Error('no stories');
 
         var i = 0, timer = null;
+
+        /*
+         * The container is a fixed height, so a three-word headline and a
+         * eighty-character one occupy the same space and the rotation cannot
+         * shove the rest of the page up and down every six seconds. The type
+         * shrinks to fit instead of the box growing.
+         *
+         * Stepping down by 0.5px from the maximum is a handful of reflows on
+         * a single short element, once per headline — cheaper and far more
+         * predictable than trying to compute the size from character counts
+         * in a proportional-ish font.
+         */
+        var fit = function () {
+          var h6 = el.firstElementChild;
+          if (!h6) return;
+          var size = 16;
+          h6.style.fontSize = size + 'px';
+          while (size > 10 && h6.scrollHeight > el.clientHeight) {
+            size -= 0.5;
+            h6.style.fontSize = size + 'px';
+          }
+        };
+
         var show = function () {
           var s = stories[i];
-          var item = 'https://news.ycombinator.com/item?id=' + s.id;
           el.innerHTML =
-            '<h6><a href="' + esc(s.url || item) + '" target="_blank" rel="noopener">' +
-              esc(s.title) + '</a>' +
-              '<a class="hn-comments" href="' + item + '" target="_blank" rel="noopener">' +
-                (s.descendants || 0) + '&nbsp;comments</a>' +
-            '</h6>';
+            '<h6><a href="' +
+              esc(s.url || 'https://news.ycombinator.com/item?id=' + s.id) +
+              '" target="_blank" rel="noopener">' + esc(s.title) + '</a></h6>';
+          fit();
           i = (i + 1) % stories.length;
         };
         var start = function () { timer = setInterval(show, C.hn.rotateMs); };
@@ -185,6 +206,14 @@
 
         show();
         start();
+
+        /* Rotating to a portrait phone changes the available width, so the
+         * headline on screen has to be re-fitted rather than left clipped. */
+        var t;
+        window.addEventListener('resize', function () {
+          clearTimeout(t);
+          t = setTimeout(fit, 150);
+        });
         /* Rotating out from under the cursor mid-read is the whole reason
          * headlines were unclickable before. */
         el.addEventListener('mouseenter', stop);

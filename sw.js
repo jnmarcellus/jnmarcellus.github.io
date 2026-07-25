@@ -5,7 +5,7 @@
  * a stale worker can never pin an old build forever, which is the classic
  * way a cached static site becomes unfixable from the server side.
  */
-var CACHE = 'quest-v9';
+var CACHE = 'quest-v11';
 
 var SHELL = [
   'index.html',
@@ -63,17 +63,11 @@ var SHELL = [
   'img/icons/dailymail.co.uk.png',
   'img/icons/google.com.png',
   'img/icons/hulu.com.png',
-  'img/icons/johnmarcellus.com.png',
-  'img/icons/linkedin.com.png',
-  'img/icons/mwmbl.org.png',
   'img/icons/netflix.com.png',
   'img/icons/news.ycombinator.com.png',
-  'img/icons/reddit.com.png',
   'img/icons/slashdot.org.png',
   'img/icons/spotify.com.png',
   'img/icons/theguardian.com.png',
-  'img/icons/tldr.tech.png',
-  'img/icons/x.com.png',
   'img/icons/youtube.com.png'
 ];
 
